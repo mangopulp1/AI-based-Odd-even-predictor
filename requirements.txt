@@ -1,22 +1,21 @@
-annotated-types==0.7.0
-anyio==4.10.0
-click==8.2.1
-colorama==0.4.6
-fastapi==0.116.1
-h11==0.16.0
-idna==3.10
-Jinja2==3.1.6
-MarkupSafe==3.0.2
-pydantic==2.11.7
-pydantic_core==2.33.2
-python-multipart==0.0.20
-sniffio==1.3.1
-starlette==0.47.3
-typing-inspection==0.4.1
-typing_extensions==4.15.0
-uvicorn==0.35.0
-scikit-learn
-joblib
-
-
-
+annotated-types==0.7.0      # Type annotations for Pydantic
+anyio==4.10.0              # Asynchronous compatibility layer
+click==8.2.1               # Command-line interface tools
+colorama==0.4.6            # Terminal color support (Windows)
+fastapi==0.116.1           # Latest FastAPI version
+h11==0.16.0                # HTTP/1.1 library for ASGI
+idna==3.10                 # Internationalized domain names
+Jinja2==3.1.6              # Templating engine
+MarkupSafe==3.0.2          # Safe string handling for Jinja2
+pydantic==2.11.7           # Data validation and settings management
+pydantic_core==2.33.2      # Core validation logic for Pydantic
+python-multipart==0.0.20   # Form data parsing for FastAPI
+sniffio==1.3.1             # Detects the current async event loop
+starlette==0.47.3          # ASGI framework underpinning FastAPI
+typing-inspection==0.4.1   # Runtime inspection of types
+typing_extensions==4.15.0  # Backported type hints
+uvicorn==0.35.0            # ASGI server
+tensorflow==2.15.0         # Stable TensorFlow version for advanced ML
+scikit-learn               # Machine learning library (latest version)
+joblib                     # Joblib for Scikit-learn (latest version)
+numpy==1.26.0              # Numerical operations for TensorFlow (added for consistency)

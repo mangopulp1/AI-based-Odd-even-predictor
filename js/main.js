@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const resultBox = document.getElementById("result-box");
     const resultText = document.getElementById("result-text");
     const loadingAnimation = document.getElementById("loading-animation");
+    const numberInput = document.getElementById("numberInput");
 
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -15,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
         loadingAnimation.style.display = "block";
 
         try {
-            const response = await fetch("/predict", {
+            const response = await fetch("http://localhost:8000/predict", {
                 method: "POST",
                 body: formData
             });
@@ -32,8 +33,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 if (resultValue.includes("even")) resultText.classList.add("even");
                 else if (resultValue.includes("odd")) resultText.classList.add("odd");
-                else if (resultValue.includes("decimal")) resultText.classList.add("decimal");
-                else if (resultValue.includes("integer")) resultText.classList.add("integer");
                 else resultText.classList.add("error");
             } else {
                 resultText.innerText = "ERROR";
@@ -42,8 +41,17 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (error) {
             console.error("Prediction failed:", error);
             loadingAnimation.style.display = "none";
-            resultText.innerText = "ERROR";
+            resultText.innerText = "ERROR: Network or server issue";
             resultText.className = "result-text error";
+        }
+    });
+
+    // Real-time input validation
+    numberInput.addEventListener("input", () => {
+        if (numberInput.value && isNaN(numberInput.value)) {
+            numberInput.setCustomValidity("Please enter a valid number");
+        } else {
+            numberInput.setCustomValidity("");
         }
     });
 });

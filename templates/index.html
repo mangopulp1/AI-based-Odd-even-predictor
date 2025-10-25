@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Predictor</title>
-    <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+    <link rel="stylesheet" href="/static/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -38,13 +38,13 @@
             <div class="card-header">
                 <h1 class="card-title">🚀 AI Even/Odd Predictor</h1>
             </div>
-            <form id="prediction-form" class="form-group">
+            <form id="prediction-form" class="form-group" method="post" action="/predict">
                 <div class="input-label">Enter a number of your choice</div>
                 <div class="input-container">
-                   <input type="number" id="numberInput" name="number" placeholder="Example: 3, 4, 5..." />
+                    <input type="number" id="numberInput" name="number" placeholder="Example: 3, 4, 5..." step="any" />
                 </div>
                 <div class="checkbox-container">
-                    <input type="checkbox" name="allow_decimal" id="allow_decimal" value="yes">
+                    <input type="checkbox" name="allow_decimal" id="allow_decimal" value="true">
                     <label for="allow_decimal">Predict for decimal point number (For eg: 4.45)</label>
                 </div>
                 <button class="btn predict-btn" type="submit">Predict</button>
@@ -60,6 +60,6 @@
         </div>
     </main>
     
-    <script src="{{ url_for('js', path='main.js') }}"></script>
+    <script src="/static/js/main.js"></script>
 </body>
 </html>
