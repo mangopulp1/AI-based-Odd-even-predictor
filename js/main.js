@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
         loadingAnimation.style.display = "block";
 
         try {
-            const response = await fetch("http://localhost:8000/predict", {
+            const response = await fetch("http://127.0.0.1:8000", {
                 method: "POST",
                 body: formData
             });
