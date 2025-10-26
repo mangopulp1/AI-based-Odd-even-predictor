@@ -145,9 +145,9 @@ body {
     text-align: center;
     margin-bottom: 16px;
     font-size: 2rem;
-    font-weight: 700;
+    font-weight: 500;
     letter-spacing: 0.6px;
-    background: linear-gradient(90deg, #16a34a, #22c55e, #3B71F3);
+    background: #ffffff;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;

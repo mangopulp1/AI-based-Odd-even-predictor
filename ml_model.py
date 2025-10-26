@@ -59,7 +59,7 @@ class EvenOddModel:
         if self.allow_decimal and not is_decimal_input:
             return "Decimal number is required."
         elif not self.allow_decimal and is_decimal_input:
-            return "Decimal input not allowed. Tick the box to enable it."
+            return "Decimal not allowed. Check the box"
 
         num_for_prediction = int(num_float)
 
