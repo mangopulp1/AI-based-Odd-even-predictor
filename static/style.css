@@ -37,14 +37,14 @@ body {
     line-height: 1.6;
 }
 
-/* ===== Sidebar (Matte Black + Fixed + Collapsible) ===== */
+/* ===== Sidebar ===== */
 .sidebar {
     position: fixed;
     top: 0;
     left: 0;
     height: 100vh;
     width: 300px;
-    background: #0d0d0d; /* matte black */
+    background: var(--sidebar-background);
     padding: 28px 20px;
     display: flex;
     flex-direction: column;
@@ -75,7 +75,7 @@ body {
 .sidebar-links {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 6px;
 }
 
 .sidebar-links a {
@@ -87,9 +87,8 @@ body {
     padding: 14px 20px;
     border-radius: 12px;
     background: transparent;
-    transition: background 0.2s ease;
-    font-weight: 200;
-
+    transition: background 0.2s ease, color 0.2s ease;
+    font-weight: 300;
 }
 
 .sidebar-links a:hover {
@@ -97,8 +96,8 @@ body {
 }
 
 .sidebar-links a.active {
-    background: #1a1a1a;
-    color: #e5e5e5;
+    background: var(--sidebar-link-bg);
+    color: #ffffff;
     font-weight: 500;
 }
 
@@ -108,7 +107,7 @@ body {
 }
 
 .sidebar-links a.active i {
-    color: #e5e5e5;
+    color: #ffffff;
 }
 
 .sidebar-links a:not(.active) {
@@ -120,7 +119,6 @@ body {
     font-weight: 400;
 }
 
-/* Collapsed Behavior */
 .sidebar.collapsed .sidebar-links a span {
     display: none;
 }
@@ -129,7 +127,6 @@ body {
     justify-content: center;
 }
 
-/* Smooth fade for sidebar text */
 .sidebar-links a span {
     transition: opacity 0.3s ease;
 }
@@ -162,14 +159,13 @@ body {
     border-radius: 18px;
     width: 100%;
     max-width: 620px;
-    box-shadow: 0 12px 36px rgba(0, 0, 0, .5);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, .6);
     display: flex;
     flex-direction: column;
     gap: 28px;
     position: relative;
     border: 1px solid rgba(255, 255, 255, 0.06);
     margin: 0 auto;
-    height: auto;
 }
 
 .card-header {
@@ -184,11 +180,7 @@ body {
     margin-bottom: 16px;
     font-size: 2rem;
     font-weight: 500;
-    letter-spacing: 0.6px;
-    background: #ffffff;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--text-color);
 }
 
 /* ===== Form ===== */
@@ -204,10 +196,6 @@ body {
     margin-bottom: -16px;
 }
 
-.input-container {
-    position: relative;
-}
-
 .input-container input {
     width: 100%;
     padding: 16px 20px;
@@ -219,7 +207,7 @@ body {
 }
 
 .input-container input::placeholder {
-    color: #555;
+    color: #777;
 }
 
 .input-container input:focus {
@@ -234,7 +222,7 @@ body {
     align-items: center;
     gap: 10px;
     font-size: .95rem;
-    color: #5d5c5c;
+    color: #a0a0a0;
     cursor: pointer;
 }
 
@@ -246,6 +234,7 @@ body {
     border-radius: 6px;
     position: relative;
     cursor: pointer;
+    background: #1a1a1a;
 }
 
 .checkbox-container input[type="checkbox"]:checked {
@@ -265,7 +254,7 @@ body {
 
 /* ===== Button ===== */
 .btn {
-    background:#2172a8;
+    background: var(--primary-color);
     color: #fff;
     font-size: 1.05rem;
     font-weight: 700;
@@ -273,13 +262,13 @@ body {
     border-radius: 10px;
     border: 0;
     cursor: pointer;
-    transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+    transition: all .15s ease;
     width: 100%;
 }
 
 .btn:hover {
-    transform: translateY(-2px);
-    box-shadow: #1c557b;
+    background: var(--primary-hover);
+    transform: translateY(-1px);
 }
 
 .btn:active {
@@ -303,7 +292,6 @@ body {
     height: 0;
     padding: 0 18px;
     overflow: hidden;
-    transition: opacity .2s, height .2s;
 }
 
 .result-label {
@@ -329,7 +317,7 @@ body {
 .result-text.integer { color: var(--integer-color); }
 .result-text.error { color: var(--error-color); }
 
-/* Loading animation */
+/* ===== Loading animation ===== */
 @keyframes pulse {
     0% { transform: scale(1); opacity: .8; }
     50% { transform: scale(1.08); opacity: 1; }
@@ -345,12 +333,39 @@ body {
     display: none;
 }
 
-/* Remove default input validation tooltip */
-input[type="number"]:invalid {
-    box-shadow: none;
+/* ===== Lucide Icon Styles ===== */
+.sidebar-links i,
+.toggle-btn i {
+  width: 22px;
+  height: 22px;
+  stroke: #f5f5f5;
+  stroke-width: 2;
+  transition: stroke 0.3s ease;
 }
-input[type="number"]:invalid:focus {
-    outline: none;
+
+.sidebar-links a.active i {
+  stroke: #ffffff;
+}
+
+.sidebar-links a:hover i {
+  stroke: var(--accent-blue);
+}
+
+.toggle-btn i {
+  stroke: #f5f5f5;
+}
+
+/* Collapsed */
+.sidebar.collapsed .sidebar-links i {
+  width: 26px;
+  height: 26px;
+  stroke-width: 2.4;
+}
+
+.sidebar.collapsed .toggle-btn i {
+  width: 28px;
+  height: 28px;
+  stroke-width: 2.5;
 }
 
 /* ===== Responsive ===== */
@@ -405,26 +420,3 @@ input[type="number"]:invalid:focus {
         margin-top: 0;
     }
 }
-
-/* === Lucide Icon Styles === */
-.sidebar-links i,
-.toggle-btn i {
-  width: 22px;
-  height: 22px;
-  stroke: #9b9b9b;
-  stroke-width: 2;
-  transition: stroke 0.3s ease;
-}
-
-.sidebar-links a.active i {
-  stroke: #ffffff;
-}
-
-.sidebar-links a:hover i {
-  stroke: var(--accent-blue);
-}
-
-.toggle-btn i {
-  stroke: #f5f5f5;
-}
-

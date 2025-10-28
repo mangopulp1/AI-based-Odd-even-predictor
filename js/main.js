@@ -4,23 +4,26 @@ document.addEventListener("DOMContentLoaded", () => {
   const resultText = document.getElementById("result-text");
   const loadingAnimation = document.getElementById("loading-animation");
   const numberInput = document.getElementById("numberInput");
-
   const sidebar = document.getElementById("sidebar");
   const toggleBtn = document.getElementById("toggle-btn");
-  let collapsed = false;
+  let isCollapsed = false;
 
-  // Sidebar toggle
+  
   toggleBtn.addEventListener("click", () => {
-    collapsed = !collapsed;
-    sidebar.classList.toggle("collapsed");
+        isCollapsed = !isCollapsed;
+        sidebar.classList.toggle("collapsed");
 
-    // Change icon dynamically
-    toggleBtn.innerHTML = collapsed
-      ? `<i data-lucide="arrow-right-from-line"></i>`
-      : `<i data-lucide="arrow-left-from-line"></i>`;
+        // Swap icon dynamically
+        const iconName = isCollapsed ? "panel-left-open" : "panel-left-close";
+        toggleBtn.innerHTML = `<i data-lucide="${iconName}"></i>`;
+        lucide.createIcons({
+            attr: {
+                'stroke-w':2.3
+            }
+        });
+    });
 
-    lucide.createIcons();
-  });
+  
 
   // Handle form submission
   form.addEventListener("submit", async (e) => {
@@ -33,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loadingAnimation.style.display = "block";
 
     try {
-      const response = await fetch("http://127.0.0.1:8000", {
+      const response = await fetch("http://127.0.0.1:8000/predict", {
         method: "POST",
         body: formData
       });
@@ -45,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (data.prediction) {
         const resultValue = data.prediction.toLowerCase();
-        resultText.innerText = data.prediction.toUpperCase();
+        resultText.innerText = data.prediction.toLowerCase();
 
         if (resultValue.includes("even")) resultText.classList.add("even");
         else if (resultValue.includes("odd")) resultText.classList.add("odd");

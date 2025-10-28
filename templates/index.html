@@ -1,81 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Predictor</title>
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="/static/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Predictor</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-
 <body>
-  <!-- Sidebar -->
-  <aside class="sidebar" id="sidebar">
-    <button class="toggle-btn" id="toggle-btn">
-      <i data-lucide="arrow-left-from-line"></i>
-    </button>
-
-    <div class="sidebar-links">
-      <a href="#" class="active">
-        <i data-lucide="home"></i>
-        <span>Predictor</span>
-      </a>
-      <a href="#">
-        <i data-lucide="bar-chart-2"></i>
-        <span>Statistics</span>
-      </a>
-      <a href="#">
-        <i data-lucide="settings"></i>
-        <span>Configuration</span>
-      </a>
-      <a href="#">
-        <i data-lucide="cpu"></i>
-        <span>About AI</span>
-      </a>
-    </div>
-  </aside>
-
-  <!-- Main Content -->
-  <main class="main-content">
-    <div class="card">
-      <div class="card-header">
-        <h1 class="card-title">🚀 AI Even/Odd Predictor</h1>
-      </div>
-
-      <form id="prediction-form" class="form-group" method="post" action="/predict">
-        <div class="input-label">Enter a number of your choice</div>
-        <div class="input-container">
-          <input type="number" id="numberInput" name="number" placeholder="Example: 3, 4, 5..." step="any" />
+    <aside class="sidebar" id="sidebar">
+        <button class="toggle-btn" id="toggle-btn">
+            <!-- replaced the old icon with panel-left-close -->
+            <i data-lucide="panel-left-close"></i>
+        </button>
+        <div class="sidebar-links">
+            <a href="#" class="active">
+                <i data-lucide="home"></i>
+                <span>Predictor</span>
+            </a>
+            <a href="#">
+                <i data-lucide="bar-chart-2"></i>
+                <span>Statistics</span>
+            </a>
+            <a href="#">
+                <i data-lucide="settings"></i>
+                <span>Configuration</span>
+            </a>
+            <a href="#">
+                <i data-lucide="cpu"></i>
+                <span>About AI</span>
+            </a>
         </div>
+    </aside>
 
-        <div class="checkbox-container">
-          <input type="checkbox" name="allow_decimal" id="allow_decimal" value="true">
-          <label for="allow_decimal">Predict for decimal point number (For eg: 4.45)</label>
+    <main class="main-content">
+        <div class="card">
+            <div class="card-header">
+                <h1 class="card-title">🚀 AI Even/Odd Predictor</h1>
+            </div>
+            <form id="prediction-form" class="form-group" method="post" action="/predict">
+                <div class="input-label">Enter a number of your choice</div>
+                <div class="input-container">
+                    <input type="number" id="numberInput" name="number" placeholder="Example: 3, 4, 5..." step="any" />
+                </div>
+                <div class="checkbox-container">
+                    <input type="checkbox" name="allow_decimal" id="allow_decimal" value="true">
+                    <label for="allow_decimal">Predict for decimal point number (For eg: 4.45)</label>
+                </div>
+                <button class="btn predict-btn" type="submit">Predict</button>
+            </form>
+            
+            <div class="result-box hidden" id="result-box">
+                <span class="result-label">Result:</span>
+                <div class="result-content">
+                    <span class="result-text" id="result-text"></span>
+                    <div class="loading-animation" id="loading-animation"></div>
+                </div>
+            </div>
         </div>
-
-        <button class="btn predict-btn" type="submit">Predict</button>
-      </form>
-
-      <div class="result-box hidden" id="result-box">
-        <span class="result-label">Result:</span>
-        <div class="result-content">
-          <span class="result-text" id="result-text"></span>
-          <div class="loading-animation" id="loading-animation"></div>
-        </div>
-      </div>
-    </div>
-  </main>
-
-  <script src="/js/main.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      lucide.createIcons();
-    });
-  </script>
+    </main>
+    
+    <script src="/js/main.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 </html>
