@@ -4,13 +4,13 @@
     --sidebar-background: #121212;
     --sidebar-link-bg: #1e1e1e;
     --text-color: #f5f5f5;
-    --primary-color: #4CAF50;
-    --primary-hover: #45a049;
+    --primary-color: #2172a8;
+    --primary-hover: #1c557b;
     --accent-blue: #3B71F3;
     --even-color: #4CAF50;
-    --odd-color: #FF5722;
-    --decimal-color: #2196F3;
-    --integer-color: #9C27B0;
+    --odd-color: #4CAF50;
+    --decimal-color: #4CAF50;
+    --integer-color: #4CAF50;
     --error-color: #F44336;
     --icon-color: #999;
 }
@@ -51,8 +51,6 @@ body {
     gap: 28px;
     transition: width 0.3s ease, background 0.3s ease;
     border-right: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.4);
-    z-index: 100;
 }
 
 .sidebar.collapsed {
@@ -88,9 +86,10 @@ body {
     color: var(--text-color);
     padding: 14px 20px;
     border-radius: 12px;
-    font-weight: 500;
     background: transparent;
     transition: background 0.2s ease;
+    font-weight: 200;
+
 }
 
 .sidebar-links a:hover {
@@ -100,7 +99,7 @@ body {
 .sidebar-links a.active {
     background: #1a1a1a;
     color: #e5e5e5;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .sidebar-links a i {
@@ -118,6 +117,7 @@ body {
 
 .sidebar-links a:not(.active) i {
     color: rgba(160, 160, 160, 0.6);
+    font-weight: 400;
 }
 
 /* Collapsed Behavior */
@@ -265,7 +265,7 @@ body {
 
 /* ===== Button ===== */
 .btn {
-    background: linear-gradient(90deg, #16a34a, #22c55e);
+    background:#2172a8;
     color: #fff;
     font-size: 1.05rem;
     font-weight: 700;
@@ -279,7 +279,7 @@ body {
 
 .btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 22px rgba(34, 197, 94, 0.35);
+    box-shadow: #1c557b;
 }
 
 .btn:active {
@@ -320,9 +320,7 @@ body {
 
 .result-text {
     font-size: 1.15rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    font-weight: 600;
 }
 
 .result-text.even { color: var(--even-color); }
@@ -407,3 +405,26 @@ input[type="number"]:invalid:focus {
         margin-top: 0;
     }
 }
+
+/* === Lucide Icon Styles === */
+.sidebar-links i,
+.toggle-btn i {
+  width: 22px;
+  height: 22px;
+  stroke: #9b9b9b;
+  stroke-width: 2;
+  transition: stroke 0.3s ease;
+}
+
+.sidebar-links a.active i {
+  stroke: #ffffff;
+}
+
+.sidebar-links a:hover i {
+  stroke: var(--accent-blue);
+}
+
+.toggle-btn i {
+  stroke: #f5f5f5;
+}
+
