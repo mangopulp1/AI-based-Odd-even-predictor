@@ -4,31 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Predictor</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+
 </head>
 <body>
     <aside class="sidebar" id="sidebar">
         <button class="toggle-btn" id="toggle-btn">
             <!-- replaced the old icon with panel-left-close -->
-            <i data-lucide="panel-left-close"></i>
+            <i data-feather="code"></i>
         </button>
         <div class="sidebar-links">
             <a href="#" class="active">
-                <i data-lucide="home"></i>
+                <i data-feather="home"></i>
                 <span>Predictor</span>
             </a>
             <a href="#">
-                <i data-lucide="bar-chart-2"></i>
-                <span>Statistics</span>
+                <i data-feather="bar-chart-2"></i>
+                <span>History</span>
             </a>
             <a href="#">
-                <i data-lucide="settings"></i>
+                <i data-feather="user"></i>
                 <span>Configuration</span>
             </a>
             <a href="#">
-                <i data-lucide="cpu"></i>
+                <i data-feather="cpu"></i>
                 <span>About AI</span>
             </a>
         </div>
@@ -37,7 +38,7 @@
     <main class="main-content">
         <div class="card">
             <div class="card-header">
-                <h1 class="card-title">🚀 AI Even/Odd Predictor</h1>
+                <h1 class="card-title">AI Even/Odd Predictor</h1>
             </div>
             <form id="prediction-form" class="form-group" method="post" action="/predict">
                 <div class="input-label">Enter a number of your choice</div>
@@ -63,7 +64,7 @@
     
     <script src="/js/main.js"></script>
     <script>
-        lucide.createIcons();
+        feather.replace();
     </script>
 </body>
 </html>

@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+  
   const form = document.getElementById("prediction-form");
   const resultBox = document.getElementById("result-box");
   const resultText = document.getElementById("result-text");
@@ -6,26 +7,36 @@ document.addEventListener("DOMContentLoaded", () => {
   const numberInput = document.getElementById("numberInput");
   const sidebar = document.getElementById("sidebar");
   const toggleBtn = document.getElementById("toggle-btn");
+
   let isCollapsed = false;
 
-  
+  const setToggleIcon = (name) => {
+    toggleBtn.innerHTML = `<i data-feather="${name}"></i>`;
+    if (window.feather)
+      feather.replace({
+        attr: 
+        { 
+          "stroke-width": 0.7,
+          width : 12,
+          height : 12
+        },
+      });
+  };
+
+  // initial icon
+  setToggleIcon("code");
+
   toggleBtn.addEventListener("click", () => {
-        isCollapsed = !isCollapsed;
-        sidebar.classList.toggle("collapsed");
+    isCollapsed = !isCollapsed;
+    sidebar.classList.toggle("collapsed");
+    const iconName = isCollapsed ? "code" : "code";
+    setToggleIcon(iconName);
+    toggleBtn.style.transform = isCollapsed
+      ? "translateX(4px)"
+      : "translateX(0)";
+  });
 
-        // Swap icon dynamically
-        const iconName = isCollapsed ? "panel-left-open" : "panel-left-close";
-        toggleBtn.innerHTML = `<i data-lucide="${iconName}"></i>`;
-        lucide.createIcons({
-            attr: {
-                'stroke-w':2.3
-            }
-        });
-    });
-
-  
-
-  // Handle form submission
+  // form handling
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const formData = new FormData(form);
@@ -36,19 +47,15 @@ document.addEventListener("DOMContentLoaded", () => {
     loadingAnimation.style.display = "block";
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/predict", {
-        method: "POST",
-        body: formData
-      });
-
+      const response = await fetch("/predict", { method: "POST", body: formData });
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
       const data = await response.json();
       loadingAnimation.style.display = "none";
 
       if (data.prediction) {
-        const resultValue = data.prediction.toLowerCase();
-        resultText.innerText = data.prediction.toLowerCase();
+        const resultValue = String(data.prediction).toLowerCase();
+        resultText.innerText = String(data.prediction).toUpperCase();
 
         if (resultValue.includes("even")) resultText.classList.add("even");
         else if (resultValue.includes("odd")) resultText.classList.add("odd");
@@ -57,20 +64,22 @@ document.addEventListener("DOMContentLoaded", () => {
         resultText.innerText = "ERROR";
         resultText.classList.add("error");
       }
-    } catch (error) {
-      console.error("Prediction failed:", error);
+    } catch (err) {
+      console.error("Prediction failed:", err);
       loadingAnimation.style.display = "none";
       resultText.innerText = "ERROR: Network or server issue";
       resultText.className = "result-text error";
     }
   });
 
-  // Real-time input validation
-  numberInput.addEventListener("input", () => {
-    if (numberInput.value && isNaN(numberInput.value)) {
-      numberInput.setCustomValidity("Please enter a valid number");
-    } else {
-      numberInput.setCustomValidity("");
-    }
-  });
+  // input validation
+  if (numberInput) {
+    numberInput.addEventListener("input", () => {
+      if (numberInput.value && isNaN(numberInput.value)) {
+        numberInput.setCustomValidity("Please enter a valid number");
+      } else {
+        numberInput.setCustomValidity("");
+      }
+    });
+  }
 });
