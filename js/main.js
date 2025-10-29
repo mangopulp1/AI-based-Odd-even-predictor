@@ -17,8 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
         attr: 
         { 
           "stroke-width": 0.7,
-          width : 12,
-          height : 12
+          width : 10,
+          height : 10
         },
       });
   };
