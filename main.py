@@ -28,6 +28,11 @@ async def home(request: Request):
     # Pass the 'request' object, which is REQUIRED for Jinja2's url_for
     return templates.TemplateResponse("index.html", {"request": request})
 
+@app.get("/history", response_class=HTMLResponse)
+async def history(request: Request):
+    return templates.TemplateResponse("history.html", {"request": request})
+
+
 @app.post("/predict", response_class=JSONResponse)
 async def predict(number: str = Form(...), allow_decimal: Optional[str] = Form(None)):
     """
