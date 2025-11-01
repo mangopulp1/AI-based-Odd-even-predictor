@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const numberInput = document.getElementById("numberInput");
   const sidebar = document.getElementById("sidebar");
   const toggleBtn = document.getElementById("toggle-btn");
+  const history_page = document.getElementById("history");
 
   let isCollapsed = false;
 
@@ -61,5 +62,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   numberInput.addEventListener("input", () => {
     numberInput.setCustomValidity(isNaN(numberInput.value) ? "Please enter a valid number" : "");
+  });
+
+  history_page.addEventListener("click", async () => {
+      const response = await fetch("/history", 
+        { 
+          method: "GET"
+        });
+      const html = await response.text();
+      document.querySelector(".main-content").innerHTML = html;
+
   });
 });
