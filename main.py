@@ -31,6 +31,7 @@ async def home(request: Request):
 @app.get("/history", response_class=HTMLResponse)
 async def history(request: Request):
     return templates.TemplateResponse("history.html", {"request": request})
+ 
 
 
 @app.post("/predict", response_class=JSONResponse)
