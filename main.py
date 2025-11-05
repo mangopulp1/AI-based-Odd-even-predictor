@@ -32,6 +32,14 @@ async def home(request: Request):
 async def history(request: Request):
     return templates.TemplateResponse("history.html", {"request": request})
  
+ 
+@app.get("/login", response_class=HTMLResponse)
+async def history(request: Request):
+    return templates.TemplateResponse("login.html", {"request": request})
+
+@app.get("/signup", response_class=HTMLResponse)
+async def history(request: Request):
+    return templates.TemplateResponse("signup.html", {"request": request})
 
 
 @app.post("/predict", response_class=JSONResponse)

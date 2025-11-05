@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const sidebar = document.getElementById("sidebar");
   const toggleBtn = document.getElementById("toggle-btn");
   const history_page = document.getElementById("history");
+  const search = document.getElementById("search");
 
   let isCollapsed = false;
 
@@ -73,4 +74,15 @@ document.addEventListener("DOMContentLoaded", () => {
       document.querySelector(".main-content").innerHTML = html;
 
   });
+
+ search.addEventListener(("click"), async () => {
+      const response  = fetch("/history", {
+          method: "GET"
+      });
+      const html = (await response).text();
+      document.querySelector(".main-content").innerHTML = html;
+ })
+
+
+
 });
