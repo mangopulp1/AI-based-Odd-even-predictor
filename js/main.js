@@ -9,20 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const history_page = document.getElementById("history");
   const search = document.getElementById("search");
 
-  let isCollapsed = false;
-
-  const setToggleIcon = (name) => {
-    toggleBtn.innerHTML = `<i data-feather="${name}"></i>`;
-    feather.replace();
-  };
-
-  setToggleIcon("columns");
-
-  toggleBtn.addEventListener("click", () => {
-    isCollapsed = !isCollapsed;
-    sidebar.classList.toggle("collapsed");
-    setToggleIcon("columns");
-  });
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -65,24 +51,13 @@ document.addEventListener("DOMContentLoaded", () => {
     numberInput.setCustomValidity(isNaN(numberInput.value) ? "Please enter a valid number" : "");
   });
 
-  history_page.addEventListener("click", async () => {
-      const response = await fetch("/history", 
-        { 
-          method: "GET"
-        });
-      const html = await response.text();
-      document.querySelector(".main-content").innerHTML = html;
+  history_page.addEventListener("input", (e) => {
+    if 
+  })
 
   });
 
- search.addEventListener(("click"), async () => {
-      const response  = fetch("/history", {
-          method: "GET"
-      });
-      const html = (await response).text();
-      document.querySelector(".main-content").innerHTML = html;
- })
+  
 
 
-
-});
+})

@@ -158,27 +158,27 @@ body {
   padding-left: 3px;
 }
 
- .search-gp {
+ /*.search-gp {
    background: #1a1a1a;
    border-radius: 10px;
    border: 1px solid rgba(255, 255, 255, 0.07);
 
 }
 
-.search-gp input {
+/*.search-gp input {
     font-size: 1rem;
     background: #1a1a1a;
     border: none;
     height: 48px;
-    width: 270px;
+    width: 230px;
 }
 
-.search-gp input::placeholder {
+/* .search-gp input::placeholder {
     color: #454343;
     left: 45rem;
 }
 
-.search-gp input:focus {
+/* .search-gp input:focus {
    outline: none;
    border: 1px solid var(--primary-color);
 }
