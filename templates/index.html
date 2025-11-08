@@ -18,7 +18,7 @@
 
 
         <div class="sidebar-links">
-            <a href="#" class="active">
+            <a href="/" class="active">
                 <i data-feather="home"></i>
                 <span>Predictor</span>
             </a>
@@ -26,11 +26,11 @@
                 <i data-feather="bar-chart-2"></i>
                 <span>History</span>
             </a>
-            <a href="#">
+            <a href="/configuration">
                 <i data-feather="user"></i>
                 <span>Configuration</span>
             </a>
-            <a href="#">
+            <a href="/About-AI">
                 <i data-feather="cpu"></i>
                 <span>About AI</span>
             </a>
@@ -75,5 +75,30 @@
     <script>
         feather.replace();
     </script>
+
+    <!-- Search Modal -->
+    <div class="search-modal-overlay hidden" id="search-overlay">
+        <div class="search-modal">
+            <div class="search-modal-input-wrapper">
+                <i data-feather="search"></i>
+                <input type="text" id="modal-search-input" placeholder="Type a command or search...">
+            </div>
+            <div class="search-modal-results">
+                <span class="results-label">Navigation</span>
+                <a href="/" class="result-item">
+                    <i data-feather="home"></i><span>Predictor</span>
+                </a>
+                <a href="/history" class="result-item">
+                    <i data-feather="bar-chart-2"></i><span>History</span>
+                </a>
+                <a href="/configuration" class="result-item">
+                    <i data-feather="user"></i><span>Configuration</span>
+                </a>
+                <a href="/About-AI" class="result-item">
+                    <i data-feather="cpu"></i><span>About AI</span>
+                </a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

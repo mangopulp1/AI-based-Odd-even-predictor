@@ -31,14 +31,22 @@ async def home(request: Request):
 @app.get("/history", response_class=HTMLResponse)
 async def history(request: Request):
     return templates.TemplateResponse("history.html", {"request": request})
- 
+
+@app.get("/About-AI", response_class=HTMLResponse)
+async def cpu(request: Request):
+    return templates.TemplateResponse("About-AI.html", {"request": request})
+
+@app.get("/configuration", response_class=HTMLResponse)
+async def configurationration(request: Request):
+    return templates.TemplateResponse("configuration.html", {"request": request})
+
  
 @app.get("/login", response_class=HTMLResponse)
-async def history(request: Request):
+async def login(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
 
-@app.get("/signup", response_class=HTMLResponse)
-async def history(request: Request):
+@app.post("/signup", response_class=HTMLResponse)
+async def signup(request: Request):
     return templates.TemplateResponse("signup.html", {"request": request})
 
 
