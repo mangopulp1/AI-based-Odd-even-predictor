@@ -1,0 +1,25 @@
+# .aiexclude — AI-ONLY (Gemini, Copilot, etc.)
+# Blocks AI from reading secrets, DB, models
+
+.env
+*.env
+config/
+secrets/
+*.pkl
+*.pickle
+*.log
+*.dump
+*.sql
+*.backup
+models/*.pkl
+dump/
+backups/
+*.yaml
+*.yml
+*.ini
+*.json
+*.toml
+*.conf
+*.key
+*.pem
+*.crt

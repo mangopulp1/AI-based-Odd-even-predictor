@@ -1,3 +1,195 @@
-venv/
+# UNIVERSAL .gitignore — PostgreSQL + FastAPI + Python + ML + Web
+# Paste this in EVERY project root — 100% safe, zero performance impact
+
+# === Python ===
 __pycache__/
-models/even_odd_model.pkl
+*.py[cod]
+*$py.class
+*.pyc
+*.pyo
+*.pyd
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# === Virtual Environments ===
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+.env/
+.venv.bak/
+
+# === Environment Variables & Secrets (MUST-HAVE!) ===
+.env
+.env.local
+.env.*.local
+.env.example
+config/.env
+*.env
+
+# === DATABASE: POSTGRESQL (NO SQLITE!) ===
+*.dump
+*.sql
+*.psql
+*.backup
+*.sql.gz
+*.sql.bz2
+db/
+database/
+migrations/
+dump/
+backups/
+pgdata/
+postgresql.conf
+pg_hba.conf
+pg_ident.conf
+*.conf
+
+# === ML Models (Security Risk!) ===
+*.pkl
+*.pickle
+*.joblib
+*.h5
+*.pth
+*.pt
+*.onnx
+*.bin
+*.safetensors
+models/*.pkl
+data/
+datasets/
+*.csv
+*.jsonl
+*.parquet
+*.tsv
+
+# === Secrets & Keys ===
+*.pem
+*.key
+*.crt
+*.cer
+*.jks
+*.p12
+*.pfx
+*.pub
+secret*/
+secrets/
+credentials/
+config/
+*.yaml
+*.yml
+*.toml
+*.ini
+*.json
+
+# === Logs ===
+*.log
+logs/
+log/
+*.out
+*.err
+
+# === IDE / Editor ===
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-*
+*.code-workspace
+.vscode-test/
+*.iml
+*.ipr
+*.iws
+*.code-workspace
+
+# === OS Generated ===
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# === Testing ===
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# === Jupyter ===
+.ipynb_checkpoints
+*.ipynb_checkpoints
+
+# === Build / Dist ===
+build/
+dist/
+*.spec
+*.exe
+*.dmg
+*.app
+*.deb
+*.rpm
+
+# === Node.js / Frontend (if used) ===
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+.next/
+.nuxt/
+.svelte-kit/
+dist/
+build/
+
+# === Docker ===
+.dockerignore
+Dockerfile*
+docker-compose*.yml
+.docker/
+.docker-sync/
+
+# === VS Code Local History ===
+.history
+
+# === Misc ===
+*.bak
+*.tmp
+*.temp
+*~
+.#*
+*.swp
+*.swo

@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const loadingAnimation = document.getElementById("loading-animation");
   const numberInput = document.getElementById("numberInput");
   const sidebar = document.getElementById("sidebar");
-  const toggleBtn = document.getElementById("toggle-btn");
   const history_page = document.getElementById("history");
   const search = document.getElementById("search");
 
@@ -51,13 +50,12 @@ document.addEventListener("DOMContentLoaded", () => {
     numberInput.setCustomValidity(isNaN(numberInput.value) ? "Please enter a valid number" : "");
   });
 
-  history_page.addEventListener("input", (e) => {
-    if 
-  })
-
+  search.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      const searchTerm = search.value.trim().toLowerCase();
+      if (searchTerm === "history") {
+        window.location.href = "/history";
+      }
+    }
   });
-
-  
-
-
-})
+});
