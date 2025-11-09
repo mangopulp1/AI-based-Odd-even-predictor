@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Predictor - About AI</title>
+    <title>{% block title %}AI Predictor{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/feather-icons"></script>
@@ -13,42 +13,54 @@
         <div class="searchbar">
             <i data-feather="search"></i>
             <input type="search" id="search" placeholder="Search something">
+            <div class="search-shortcut-key">
+               <kbd>/</kbd><kbd>K</kbd>
+            </div>
         </div>
 
         <div class="sidebar-links">
-            <a href="/">
-                <i data-feather="home"></i>
+            <a href="/" class="{% if request.url.path == '/' %}active{% endif %}">
+                <i data-feather="grid"></i>
                 <span>Predictor</span>
             </a>
-            <a href="/history">
+            <a href="/history" class="{% if request.url.path == '/history' %}active{% endif %}">
                 <i data-feather="bar-chart-2"></i>
                 <span>History</span>
             </a>
-            <a href="/configuration">
+            <a href="/configuration" class="{% if request.url.path == '/configuration' %}active{% endif %}">
                 <i data-feather="user"></i>
                 <span>Configuration</span>
             </a>
-            <a href="/cpu" class="active">
+            <a href="/About-AI" class="{% if request.url.path == '/About-AI' %}active{% endif %}">
                 <i data-feather="cpu"></i>
                 <span>About AI</span>
             </a>
         </div>
-        <div class="profile-section">
-            <img src="https://i.pravatar.cc/40" alt="Profile-picture" class="profile-pic">
-            <div class="profile-info">
-                <h4>Alex Johnson</h4>
-                <p>AI Engineer</p>
+
+        <!-- AI Confidence Indicator -->
+        <div class="confidence-indicator">
+            <div class="confidence-header">
+                <span class="confidence-label">AI Confidence</span>
+                <span class="confidence-percentage">0%</span>
             </div>
+            <div class="confidence-progress-bar">
+                <div class="confidence-progress-fill"></div>
+            </div>
+        </div>
+
+
+        <div class="profile-section">
+              <img src="https://i.pravatar.cc/40" alt="Profile-picture" class="profile-pic">
+              <div class="profile-info">
+                 <h4>Alex Johnson</h4>
+                 <p>AI Engineer</p>
+              </div>
         </div>
     </aside>
 
     <main class="main-content">
-        <h1>About AI Page</h1>
+        {% block content %}{% endblock %}
     </main>
-
-    <script>
-        feather.replace();
-    </script>
 
     <!-- Search Modal -->
     <div class="search-modal-overlay hidden" id="search-overlay">
@@ -60,7 +72,7 @@
             <div class="search-modal-results">
                 <span class="results-label">Navigation</span>
                 <a href="/" class="result-item">
-                    <i data-feather="home"></i><span>Predictor</span>
+                    <i data-feather="grid"></i><span>Predictor</span>
                 </a>
                 <a href="/history" class="result-item">
                     <i data-feather="bar-chart-2"></i><span>History</span>
@@ -72,8 +84,19 @@
                     <i data-feather="cpu"></i><span>About AI</span>
                 </a>
             </div>
+            <div class="search-modal-footer">
+                <div class="footer-item"><kbd>↑</kbd><kbd>↓</kbd> to navigate</div>
+                <div class="footer-item"><kbd>enter</kbd> to select</div>
+                <div class="footer-item"><kbd>esc</kbd> to close</div>
+            </div>
         </div>
     </div>
-    <script src="{{ url_for('static', path='js/main.js') }}"></script>
+
+    <script>
+        // This ensures feather icons are replaced on all pages
+        feather.replace();
+    </script>
+    <!-- The main.js script is now included in the base template -->
+    <script src="js/main.js"></script>
 </body>
 </html>
