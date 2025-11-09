@@ -11,7 +11,7 @@
      <body> 
           <h1>Sign In</h1>
           <div class="form-container">
-               <form action="/" method="POST">
+               <form action="/" method="GET">
                     <div class="input-label">Full Name</div>
                     <div class="input-container">
                        <input type="input" id="name_signIn_input" placeholder="Ex: Jhon Doe"/>
@@ -25,7 +25,11 @@
                    <div class="input-label">Password</div>
                     <div class="input-container">
                        <input type="input" id="password_signIn_input" placeholder="Ex: sgertf343v"/>
+                       <div class="form-small-text">Forgot your password? <a href="/forgot_password">Reset password now</a href><div>
                    </div>
+
+                   <button class="btn" type="submit">Sign In</button>
+                   <a href="/signup">Don't have any account?<span>Signup now</span></a>
                    
                </form>
           </div>

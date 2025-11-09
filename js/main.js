@@ -196,4 +196,21 @@ document.addEventListener("DOMContentLoaded", () => {
         closeModal();
       }
     });
+
+    // --- Keyboard shortcut for Sidebar Search ---
+    document.addEventListener("keydown", (e) => {
+        // Check if user is typing in an input, textarea, or select
+        const activeElement = document.activeElement;
+        const isTyping = ['INPUT', 'TEXTAREA', 'SELECT'].includes(activeElement.tagName);
+
+        // If '/' or 'k' is pressed and user is not typing, focus the sidebar search
+        if (!isTyping && (e.key === '/' || e.key.toLowerCase() === 'k')) {
+            // Prevent default browser action (like quick find in Firefox)
+            e.preventDefault();
+            
+            if (sidebarSearchInput) {
+                sidebarSearchInput.focus();
+            }
+        }
+    });
 });

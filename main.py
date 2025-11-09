@@ -45,10 +45,17 @@ async def configurationration(request: Request):
 async def login(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
 
-@app.post("/signup", response_class=HTMLResponse)
+@app.get("/signup", response_class=HTMLResponse)
 async def signup(request: Request):
     return templates.TemplateResponse("signup.html", {"request": request})
 
+@app.get("/forgot_password", response_class=HTMLResponse)
+async def signup(request: Request):
+    return templates.TemplateResponse("forgot_password.html", {"request": request})
+
+@app.get("/Reset_password", response_class=HTMLResponse)
+async def signup(request: Request):
+    return templates.TemplateResponse("Reset_password.html", {"request": request})
 
 @app.post("/predict", response_class=JSONResponse)
 async def predict(number: str = Form(...), allow_decimal: Optional[str] = Form(None)):

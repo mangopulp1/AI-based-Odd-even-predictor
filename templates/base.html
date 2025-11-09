@@ -12,28 +12,35 @@
     <aside class="sidebar">
         <div class="searchbar">
             <i data-feather="search"></i>
-            <input type="search" id="search" placeholder="Search something">
+            <input type="search" id="search" placeholder="Search">
             <div class="search-shortcut-key">
                <kbd>/</kbd><kbd>K</kbd>
             </div>
         </div>
 
         <div class="sidebar-links">
-            <a href="/" class="{% if request.url.path == '/' %}active{% endif %}">
-                <i data-feather="grid"></i>
-                <span>Predictor</span>
-            </a>
-            <a href="/history" class="{% if request.url.path == '/history' %}active{% endif %}">
-                <i data-feather="bar-chart-2"></i>
-                <span>History</span>
-            </a>
-            <a href="/configuration" class="{% if request.url.path == '/configuration' %}active{% endif %}">
-                <i data-feather="user"></i>
-                <span>Configuration</span>
-            </a>
-            <a href="/About-AI" class="{% if request.url.path == '/About-AI' %}active{% endif %}">
-                <i data-feather="cpu"></i>
-                <span>About AI</span>
+            <div class="main-nav-links"> <!-- This div pushes the logout button down -->
+                <a href="/" class="{% if request.url.path == '/' %}active{% endif %}">
+                    <i data-feather="grid"></i>
+                    <span>Predictor</span>
+                </a>
+                <a href="/history" class="{% if request.url.path == '/history' %}active{% endif %}">
+                    <i data-feather="bar-chart-2"></i>
+                    <span>History</span>
+                </a>
+                <a href="/configuration" class="{% if request.url.path == '/configuration' %}active{% endif %}">
+                    <i data-feather="user"></i>
+                    <span>Configuration</span>
+                </a>
+                <a href="/About-AI" class="{% if request.url.path == '/About-AI' %}active{% endif %}">
+                    <i data-feather="cpu"></i>
+                    <span>About AI</span>
+                </a>
+            </div>
+
+            <a href="/login" class="logout-link">
+                <i data-feather="log-out"></i>
+                <span>Logout</span>
             </a>
         </div>
 
@@ -83,6 +90,9 @@
                 <a href="/About-AI" class="result-item">
                     <i data-feather="cpu"></i><span>About AI</span>
                 </a>
+                <a href="/login" class="result-item">
+                    <i data-feather="log-out"></i><span>Logout</span>
+                </a>
             </div>
             <div class="search-modal-footer">
                 <div class="footer-item"><kbd>↑</kbd><kbd>↓</kbd> to navigate</div>
@@ -97,6 +107,6 @@
         feather.replace();
     </script>
     <!-- The main.js script is now included in the base template -->
-    <script src="js/main.js"></script>
+    <script src="/js/main.js"></script>
 </body>
 </html>
