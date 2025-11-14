@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = await response.json();
         loadingAnimation.style.display = "none";
 
-        // Update confidence if it exists in the response
+          // Update confidence if it exists in the response
         // Assuming the backend sends a value between 0 and 1 (e.g., 0.87)
         if (data.confidence !== undefined) updateConfidence(data.confidence);
   
@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 item.style.display = 'none';
             }
         });
-        
+
         selectedIndex = hasVisibleItems ? 0 : -1;
         updateSelection();
     };
@@ -207,7 +207,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!isTyping && (e.key === '/' || e.key.toLowerCase() === 'k')) {
             // Prevent default browser action (like quick find in Firefox)
             e.preventDefault();
-            
+
             if (sidebarSearchInput) {
                 sidebarSearchInput.focus();
             }
