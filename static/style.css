@@ -1,24 +1,137 @@
-/* Add your existing styles here if you have any */
-
-/* Sidebar Layout */
-.sidebar {
-    display: flex;
-    flex-direction: column;
-    height: 100vh; /* Ensure sidebar takes full viewport height */
+/* -------------------------------------------
+   GLOBAL + LAYOUT
+------------------------------------------- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Inter", sans-serif;
+  background: #0f1115;
+  color: #d1d5db;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
 }
 
-.sidebar-links {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1; /* Allows this container to grow and fill available space */
+/* Container — premium enterprise card */
+.container {
+  max-width: 900px;
+  width: 100%;
+  background: #15171c;
+  padding: 40px;
+  border-radius: 16px;
+  margin-top: 50px;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* This class makes the main navigation links take up the available space, pushing the logout link down */
-.main-nav-links {
-    flex-grow: 1;
+/* -------------------------------------------
+   HEADERS
+------------------------------------------- */
+header h1 {
+  font-size: 36px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.5px;
+  text-align: center;
+  margin-bottom: 8px;
+}
+header p {
+  color: #9ca3af;
+  font-size: 16px;
+  text-align: center;
 }
 
-/* Ensure all sidebar icons have a consistent stroke width */
-.sidebar .feather {
-    stroke-width: 2;
+/* -------------------------------------------
+   GRID (2-column on desktop)
+------------------------------------------- */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+  margin-bottom: 20px;
+}
+@media (min-width: 768px) {
+  .grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* -------------------------------------------
+   INPUTS & SELECT
+------------------------------------------- */
+input, select {
+  width: 100%;
+  padding: 14px 16px;
+  background: #1c1f26;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #f3f4f6;
+  border-radius: 10px;
+  font-size: 15px;
+  transition: 0.25s ease;
+}
+input::placeholder { color: #6b7280; }
+input:focus, select:focus {
+  border-color: #4f6ef7;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(79, 110, 247, 0.25);
+}
+
+/* Custom select arrow */
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 8l4 4 4-4' stroke='%236b7280' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+}
+
+/* -------------------------------------------
+   LABELS
+------------------------------------------- */
+label {
+  color: #9ca3af;
+  font-size: 14px;
+  margin-bottom: 8px;
+  display: block;
+  font-weight: 500;
+}
+
+/* -------------------------------------------
+   BUTTON
+------------------------------------------- */
+button {
+  width: 100%;
+  background: #4f6ef7;
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  padding: 16px 0;
+  font-size: 16px;
+  margin-top: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+button:hover { background: #3d59d9; }
+button:active { background: #2c47b9; }
+
+/* -------------------------------------------
+   RESULT PANEL
+------------------------------------------- */
+#result {
+  display: none;
+  background: #1a1c22;
+  border-radius: 14px;
+  padding: 25px;
+  margin-top: 35px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.35);
+}
+#result h2 {
+  color: #fff;
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+#eta-hours, #eta-time {
+  font-size: 17px;
+  color: #d1d5db;
+  margin-bottom: 8px;
 }
