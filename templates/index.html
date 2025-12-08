@@ -1,61 +1,440 @@
-<!DOCTYPE html>
-<html lang="en">
+<!-- eta-dashboard.html
+     Enterprise-style ETA Calculator (Whope Dashboard look)
+     Single-file: Tailwind CDN + small custom CSS + JS
+-->
+<!doctype html>
+<html lang="en" class="antialiased">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ETA Calculator – Logistics Intelligence</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ETA Calculator — Logistics Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b0d10; --surface:#0f1114; --muted:#97a0ad; --accent:#6b8cff; --glass:rgba(255,255,255,0.03);
+    }
+    html,body{height:100%}
+    body{
+      background: radial-gradient(1200px 400px at 10% 10%, rgba(107,140,255,0.06), transparent 8%),
+                  radial-gradient(900px 300px at 95% 90%, rgba(16,185,129,0.03), transparent 6%),
+                  var(--bg);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color: #e6eef8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.35;
+    }
+
+    /* Container look */
+    .app-shell { max-width:1200px; margin:36px auto; padding:28px; background:linear-gradient(180deg,var(--surface), rgba(255,255,255,0.01)); border-radius:14px; border: 1px solid rgba(255,255,255,0.03); box-shadow: 0 8px 30px rgba(2,6,23,0.7); }
+
+    /* Left nav */
+    .side-nav { width:220px; min-width:220px; background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00)); border-radius:12px; padding:18px; border:1px solid rgba(255,255,255,0.02); }
+    .brand-dot { width:44px; height:44px; background:linear-gradient(135deg,var(--accent), #24d39a); border-radius:10px; display:flex; align-items:center; justify-content:center; color:#07102a; font-weight:800; }
+    .nav-link { color:var(--muted); padding:10px 12px; border-radius:10px; display:flex; gap:10px; align-items:center; transition:all .15s; font-weight:600; }
+    .nav-link:hover { background: rgba(255,255,255,0.02); color: #fff; transform:translateX(4px); }
+    .nav-active { background: linear-gradient(90deg, rgba(107,140,255,0.06), rgba(36,211,154,0.02)); color: #fff; box-shadow: inset 0 0 0 1px rgba(107,140,255,0.04); }
+
+    /* Card styles */
+    .card { background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00)); border-radius:12px; padding:18px; border:1px solid rgba(255,255,255,0.03); }
+    .card-quiet { background:transparent; border:1px dashed rgba(255,255,255,0.02); }
+
+    /* Input focus */
+    .inp:focus { box-shadow: 0 6px 24px rgba(107,140,255,0.08); border-color: rgba(107,140,255,0.7) !important; outline:none; }
+
+    /* Tiny KPIs */
+    .kpi { background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00)); border-radius:10px; padding:12px; display:flex; flex-direction:column; gap:6px; min-width:150px; }
+
+    /* small sparkline imitation */
+    .spark { height:36px; width:100%; border-radius:6px; background: linear-gradient(90deg, rgba(107,140,255,0.08), rgba(36,211,154,0.04)); display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:12px; }
+
+    /* result emphasis */
+    .eta-value { font-weight:800; font-size:28px; color:#ffffff; letter-spacing:-0.6px; }
+    .sub-muted { color:var(--muted); font-size:13px; }
+
+    /* small helper */
+    .pill { display:inline-block; padding:6px 10px; border-radius:999px; background:rgba(255,255,255,0.02); color:var(--muted); font-weight:600; font-size:13px; }
+
+    /* responsive tweaks */
+    @media (max-width: 980px) {
+      .side-nav { display:none; }
+      .app-shell{ padding:18px; margin:20px; }
+    }
+  </style>
 </head>
-<body class="bg-gray-900 text-gray-300">
-  <div class="container mx-auto p-4 sm:p-6 lg:p-8 max-w-4xl my-8 md:my-12">
-    <header class="text-center mb-8">
-      <h1 class="text-3xl sm:text-4xl font-bold text-white">Logistics ETA Calculator</h1>
-      <p class="mt-2 text-md sm:text-lg text-gray-400">Enterprise-grade travel time estimation for supply chain teams.</p>
-    </header>
-
-    <main>
-      <form onsubmit="calculateETA(); return false;">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <!-- Form Groups -->
+<body>
+  <div class="app-shell mx-4 lg:mx-auto">
+    <div class="flex gap-6">
+      <!-- Sidebar -->
+      <aside class="side-nav hidden lg:block">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="brand-dot">K</div>
           <div>
-            <label for="origin" class="block mb-2 text-sm font-medium text-gray-400">Origin City</label>
-            <input id="origin" name="origin" placeholder="e.g., Mumbai" class="w-full p-3 bg-gray-800 border border-gray-600 text-white rounded-lg focus:ring-blue-500 focus:border-blue-500" />
+            <div class="text-sm text-gray-300 font-semibold">KAUSTUBH</div>
+            <div class="text-xs sub-muted">AI • Logistics • GeoIntel</div>
           </div>
+        </div>
 
+        <nav class="flex flex-col gap-1">
+          <a class="nav-link nav-active" href="#">Dashboard</a>
+          <a class="nav-link" href="#eta">ETA Calculator</a>
+          <a class="nav-link" href="#case-studies">Case Studies</a>
+          <a class="nav-link" href="#services">Services</a>
+          <a class="nav-link" href="#legal-info">Legal Information</a>
+        </nav>
+
+        <div class="mt-6">
+          <div class="text-xs sub-muted mb-2">ENV</div>
+          <div class="pill">Production</div>
+        </div>
+
+        <div class="mt-6 text-xs sub-muted">
+          <div class="mb-2">Quick Actions</div>
+          <button id="btnTest" class="w-full bg-white/6 text-white text-sm py-2 rounded-md">Request Brief</button>
+        </div>
+      </aside>
+
+      <!-- Main area -->
+      <main class="flex-1">
+        <!-- Top header area -->
+        <div class="flex items-center justify-between mb-6">
           <div>
-            <label for="destination" class="block mb-2 text-sm font-medium text-gray-400">Destination City</label>
-            <input id="destination" name="destination" placeholder="e.g., Dubai" class="w-full p-3 bg-gray-800 border border-gray-600 text-white rounded-lg focus:ring-blue-500 focus:border-blue-500" />
+            <h2 class="text-xl font-semibold">ETA Calculator</h2>
+            <p class="sub-muted mt-1">Accurate arrival forecasts with configurable handling and congestion assumptions</p>
           </div>
-
-          <div>
-            <label for="distance" class="block mb-2 text-sm font-medium text-gray-400">Distance (KM)</label>
-            <input id="distance" name="distance" type="number" placeholder="e.g., 1900" class="w-full p-3 bg-gray-800 border border-gray-600 text-white rounded-lg focus:ring-blue-500 focus:border-blue-500" />
-          </div>
-
-          <div>
-            <label for="mode" class="block mb-2 text-sm font-medium text-gray-400">Transport Mode</label>
-            <div class="relative">
-              <select id="mode" name="mode" class="custom-select dark-select w-full p-3 bg-gray-800 border border-gray-600 text-white rounded-lg focus:ring-blue-500 focus:border-blue-500">
-              <option value="truck">Truck</option>
-              <option value="air">Air Freight</option>
-              <option value="sea">Ocean Freight</option>
-              </select>
+          <div class="flex items-center gap-4">
+            <div class="kpi card">
+              <div class="text-xs sub-muted">Default Speeds</div>
+              <div class="text-sm font-semibold">Truck 60 km/h</div>
+              <div class="text-sm font-semibold">Air 700 km/h</div>
+            </div>
+            <div class="kpi card">
+              <div class="text-xs sub-muted">Last calc</div>
+              <div id="lastCalc" class="text-sm font-semibold">—</div>
             </div>
           </div>
         </div>
-        <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Calculate ETA</button>
-      </form>
 
-      <div id="result" class="mt-8 p-6 bg-gray-800 rounded-lg shadow-md" style="display: none;">
-        <h2 class="text-2xl font-bold mb-4 text-white">Estimated Arrival</h2>
-        <div id="eta-hours" class="text-lg text-gray-300 mb-2"></div>
-        <div id="eta-time" class="text-lg text-gray-300"></div>
-      </div>
-    </main>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Left column: Inputs -->
+          <section class="col-span-2 card">
+            <div id="eta" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <!-- Origin / Destination -->
+              <div>
+                <label class="text-sm sub-muted mb-2">Origin (City / Port)</label>
+                <input id="origin" class="inp w-full px-4 py-3 bg-transparent border border-white/6 rounded-md" placeholder="e.g., Mumbai (Nhava Sheva)" />
+              </div>
+              <div>
+                <label class="text-sm sub-muted mb-2">Destination (City / Port)</label>
+                <input id="destination" class="inp w-full px-4 py-3 bg-transparent border border-white/6 rounded-md" placeholder="e.g., Jebel Ali (Dubai)" />
+              </div>
+
+              <div>
+                <label class="text-sm sub-muted mb-2">Distance (km)</label>
+                <input id="distance" type="number" min="1" class="inp w-full px-4 py-3 bg-transparent border border-white/6 rounded-md" placeholder="e.g., 1900" />
+              </div>
+
+              <div>
+                <label class="text-sm sub-muted mb-2">Transport Mode</label>
+                <select id="mode" class="inp w-full px-4 py-3 bg-transparent border border-white/6 rounded-md">
+                  <option value="truck">Truck</option>
+                  <option value="sea">Ocean Freight (Container)</option>
+                  <option value="air">Air Freight</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="text-sm sub-muted mb-2">Departure (local)</label>
+                <input id="departure" type="datetime-local" class="inp w-full px-4 py-3 bg-transparent border border-white/6 rounded-md" />
+                <div class="text-xs sub-muted mt-1">Choose local departure time at origin</div>
+              </div>
+
+              <div>
+                <label class="text-sm sub-muted mb-2">Origin timezone</label>
+                <select id="timezone" class="inp w-full px-4 py-3 bg-transparent border border-white/6 rounded-md">
+                  <!-- A short curated list for demo -->
+                  <option value="Asia/Kolkata">Asia/Kolkata (IST)</option>
+                  <option value="Asia/Dubai">Asia/Dubai (GST)</option>
+                  <option value="Asia/Shanghai">Asia/Shanghai (CST)</option>
+                  <option value="Europe/London">Europe/London (GMT)</option>
+                  <option value="America/New_York">America/New_York (ET)</option>
+                </select>
+              </div>
+
+              <div class="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="text-sm sub-muted mb-2">Estimated handling & port time (hours)</label>
+                  <input id="handling" type="number" min="0" step="0.5" value="12" class="inp w-full px-4 py-3 bg-transparent border border-white/6 rounded-md" />
+                </div>
+                <div>
+                  <label class="text-sm sub-muted mb-2">Congestion multiplier (%)</label>
+                  <input id="congestion" type="number" min="0" step="1" value="0" class="inp w-full px-4 py-3 bg-transparent border border-white/6 rounded-md" />
+                  <div class="text-xs sub-muted mt-1">Enter additional percent delay for congestion (e.g., 25 = +25%)</div>
+                </div>
+              </div>
+
+              <div class="md:col-span-2 mt-2 flex gap-3">
+                <button id="calcBtn" class="ml-auto w-full sm:w-auto bg-gradient-to-r from-indigo-500 to-teal-400 px-5 py-3 rounded-md text-black font-semibold shadow-md hover:opacity-95">Calculate ETA</button>
+                <button id="resetBtn" class="w-full sm:w-auto bg-white/6 px-4 py-3 rounded-md text-white font-medium">Reset</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- Right column: Result + Quick dashboard -->
+          <aside class="space-y-6">
+            <div class="card">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <div class="text-xs sub-muted">Estimated Time-to-Arrival</div>
+                  <div id="etaHuman" class="eta-value mt-2">—</div>
+                  <div id="etaWhen" class="sub-muted mt-1">—</div>
+                </div>
+                <div class="text-right">
+                  <div class="text-xs sub-muted">ETA (local)</div>
+                  <div id="etaLocal" class="font-semibold mt-2">—</div>
+                </div>
+              </div>
+
+              <div class="mt-4 border-t border-white/6 pt-4">
+                <div class="text-xs sub-muted">Assumptions</div>
+                <ul class="mt-2 text-sm sub-muted space-y-1">
+                  <li>Speeds: Truck 60km/h · Sea 35km/h · Air 700km/h</li>
+                  <li>Congestion multiplier applied on transit time</li>
+                  <li>Handling time added as fixed hours</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="flex items-center justify-between mb-3">
+                <div class="text-xs sub-muted">Quick KPIs</div>
+                <div class="text-xs sub-muted">Live</div>
+              </div>
+              <div class="grid grid-cols-1 gap-3">
+                <div class="spark">Transit Hours: <span id="transitHours" class="font-semibold ml-2">—</span></div>
+                <div class="spark">Handling Hours: <span id="handlingHours" class="font-semibold ml-2">—</span></div>
+                <div class="spark">Total Hours: <span id="totalHours" class="font-semibold ml-2">—</span></div>
+              </div>
+            </div>
+
+            <div class="card card-quiet text-sm sub-muted">
+              <div class="flex items-center justify-between mb-2">
+                <div class="text-xs">Turnkey Export</div>
+                <div class="text-xs font-semibold">Pro</div>
+              </div>
+              <div>
+                <div class="text-xs">Export results & assumptions to CSV or attach to a case study with a single click.</div>
+                <div class="mt-3 flex gap-2">
+                  <button id="exportBtn" class="w-full sm:w-auto bg-white/6 px-3 py-2 rounded-md font-semibold">Export CSV</button>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        <!-- Below: Case-study / Legal link (anchor) -->
+        <section id="case-studies" class="mt-8 card">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h3 class="text-lg font-semibold">Case Study — Red Sea Reroute</h3>
+              <div class="sub-muted text-sm">Preview of dashboard-style case file export</div>
+            </div>
+            <div class="text-xs sub-muted">Status: Live</div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="col-span-2">
+              <div class="text-sm sub-muted mb-2">Summary</div>
+              <div class="text-sm text-gray-200">Real-time threat intelligence reduced transit disruption by enabling reroutes within 36 hours. Estimated savings vs reactive routing: $1.2M per major carrier per annum.</div>
+            </div>
+            <div>
+              <div class="text-sm sub-muted mb-2">Key metrics</div>
+              <div class="text-sm">
+                <div>Avg Delay Reduced: <strong>48%</strong></div>
+                <div>Avg Reroute Time: <strong>6 hrs</strong></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="legal-info" class="mt-6 card">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h4 class="text-md font-semibold">Legal Information</h4>
+              <div class="sub-muted text-sm">Data privacy, antitrust, and compliance references</div>
+            </div>
+            <div class="text-xs sub-muted">Docs available</div>
+          </div>
+          <div class="text-sm sub-muted">
+            <ul class="list-disc pl-4 space-y-1">
+              <li>Data Privacy: GDPR, India (DPDP bill) — retention & export rules</li>
+              <li>Cyber & Security: Incident disclosure timelines, liability caps</li>
+              <li>Competition & Antitrust: Market data usage and sharing boundaries</li>
+              <li>Contractual: SLAs, liability, confidentiality & data processing addendums</li>
+            </ul>
+          </div>
+        </section>
+
+      </main>
+    </div>
   </div>
 
-  <script src="{{ url_for('static', path='/js/main.js') }}"></script>
+  <!-- Minimal JS: calculation + export -->
+  <script>
+    // Base speeds (km/h)
+    const BASE_SPEED = { truck: 60, sea: 35, air: 700 };
+
+    // Helpers
+    function hrsToHuman(hours) {
+      if (!isFinite(hours) || hours <= 0) return '—';
+      const d = Math.floor(hours / 24);
+      const h = Math.floor(hours % 24);
+      const m = Math.round((hours - Math.floor(hours)) * 60);
+      let out = '';
+      if (d) out += d + 'd ';
+      if (h) out += h + 'h ';
+      if (m) out += m + 'm';
+      return out.trim();
+    }
+
+    function toLocalString(date, tz) {
+      try {
+        return new Date(date).toLocaleString('en-GB', { timeZone: tz, hour12: false, year:'numeric', month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
+      } catch(e) {
+        return new Date(date).toString();
+      }
+    }
+
+    // UI bindings
+    const btn = document.getElementById('calcBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const exportBtn = document.getElementById('exportBtn');
+    const lastCalc = document.getElementById('lastCalc');
+
+    btn.addEventListener('click', runCalc);
+    resetBtn.addEventListener('click', resetForm);
+    exportBtn.addEventListener('click', exportCSV);
+
+    function getVal(id) { return document.getElementById(id).value; }
+
+    function runCalc() {
+      const origin = getVal('origin') || 'Origin';
+      const destination = getVal('destination') || 'Destination';
+      const distance = parseFloat(getVal('distance')) || 0;
+      const mode = getVal('mode') || 'truck';
+      const departureRaw = getVal('departure');
+      const tz = getVal('timezone') || Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const handling = parseFloat(getVal('handling')) || 0;
+      const congestionPct = parseFloat(getVal('congestion')) || 0;
+
+      // validations
+      if (distance <= 0) { alert('Please enter a valid distance in km'); return; }
+      if (!departureRaw) { alert('Please choose a departure datetime'); return; }
+
+      // transit time in hours
+      const baseSpeed = BASE_SPEED[mode] || 60;
+      const transitHours = distance / baseSpeed;
+
+      // apply congestion multiplier: e.g., 25% => multiply transit time by 1.25
+      const congestionFactor = 1 + (congestionPct / 100);
+      const transitWithCongestion = transitHours * congestionFactor;
+
+      // total hours = transit + handling
+      const totalHours = transitWithCongestion + handling;
+
+      // compute ETA (in origin timezone first)
+      const departureDate = new Date(departureRaw);
+      // departureDate is assumed local to the chosen tz; to convert robustly, treat departure as if local and compute milliseconds:
+      // We'll compute ETA by adding totalHours to departureDate (works if departure input matches user's local offset)
+      const etaMs = departureDate.getTime() + Math.round(totalHours * 3600 * 1000);
+      const etaDate = new Date(etaMs);
+
+      // if check for the edge cases- sanctions, ESG regulation, laws of individual governments,air-space bans(parmanent/temprorary)
+      let sanction_track = ['Iran', 'Russia']
+      let Air_space_bans_parament = ['Yemen', 'Gaza', 'Westbank']
+      let Air_space_bans_temprory = ['Lebnon', 'Syria', 'Iraq', 'Saudi Arabia', 'Oman', 'Kuwait', 'Qatar', 'UAE', 'Israel']
+
+      btn.addEventListener('click', (e) => {
+         if (origin === sanction_track) {
+              console.log("Error: Origin is sanctioned")
+         }
+        if (destination === sanction_track) {
+              console.log("Error: Destination is sanctioned")
+         }
+      })
+
+
+      // fill UI
+      document.getElementById('transitHours').innerText = transitWithCongestion.toFixed(1) + ' hrs';
+      document.getElementById('handlingHours').innerText = handling.toFixed(1) + ' hrs';
+      document.getElementById('totalHours').innerText = totalHours.toFixed(1) + ' hrs';
+
+      document.getElementById('etaHuman').innerText = hrsToHuman(totalHours);
+      document.getElementById('etaWhen').innerText = origin + ' → ' + destination;
+      document.getElementById('etaLocal').innerText = toLocalString(etaDate, tz);
+
+      // last calc
+      lastCalc.innerText = new Date().toLocaleString();
+
+      // store last calc in dataset for export
+      const payload = { origin, destination, distance, mode, departure: departureDate.toISOString(), timezone: tz, handling, congestionPct, transitHours: transitWithCongestion, totalHours, etaIso: etaDate.toISOString() };
+      lastCalc.dataset.payload = JSON.stringify(payload);
+
+      // small visual flash
+      btn.animate([{ transform:'translateY(0)' }, { transform:'translateY(-4px)' }, { transform:'translateY(0)' }], { duration: 350 });
+
+      // scroll to result (mobile)
+      document.getElementById('etaHuman').scrollIntoView({ behavior:'smooth', block:'center' });
+    }
+
+    function resetForm() {
+      document.getElementById('origin').value = '';
+      document.getElementById('destination').value = '';
+      document.getElementById('distance').value = '';
+      document.getElementById('mode').value = 'truck';
+      document.getElementById('departure').value = '';
+      document.getElementById('timezone').value = 'Asia/Kolkata';
+      document.getElementById('handling').value = '12';
+      document.getElementById('congestion').value = '0';
+      document.getElementById('transitHours').innerText = '—';
+      document.getElementById('handlingHours').innerText = '—';
+      document.getElementById('totalHours').innerText = '—';
+      document.getElementById('etaHuman').innerText = '—';
+      document.getElementById('etaWhen').innerText = '—';
+      document.getElementById('etaLocal').innerText = '—';
+      lastCalc.innerText = '—';
+      delete lastCalc.dataset.payload;
+    }
+
+    function exportCSV() {
+      if (!lastCalc.dataset.payload) { alert('No calculation to export. Run a calculation first.'); return; }
+      const payload = JSON.parse(lastCalc.dataset.payload);
+      const rows = [
+        ['Origin','Destination','Distance_km','Mode','Departure_ISO','Timezone','Handling_hrs','Congestion_pct','Transit_hrs','Total_hrs','ETA_ISO'],
+        [payload.origin, payload.destination, payload.distance, payload.mode, payload.departure, payload.timezone, payload.handling, payload.congestionPct, payload.transitHours.toFixed(2), payload.totalHours.toFixed(2), payload.etaIso]
+      ];
+      const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = `eta_result_${new Date().toISOString().slice(0,19)}.csv`; a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // small usability: set default departure local time rounded to next hour
+    (function setDefaultDeparture(){
+      const dep = document.getElementById('departure');
+      const now = new Date();
+      now.setMinutes(0,0,0);
+      now.setHours(now.getHours() + 2); // default 2 hours from now
+      // format to yyyy-mm-ddThh:mm
+      const pad = n => String(n).padStart(2,'0');
+      const isoLocal = now.getFullYear() + '-' + pad(now.getMonth()+1) + '-' + pad(now.getDate()) + 'T' + pad(now.getHours()) + ':' + pad(now.getMinutes());
+      dep.value = isoLocal;
+    })();
+
+    
+  </script>
 </body>
 </html>
