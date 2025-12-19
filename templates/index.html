@@ -27,21 +27,22 @@
     }
 
     /* Container look */
-    .app-shell { max-width:1200px; margin:36px auto; padding:28px; background:linear-gradient(180deg,var(--surface), rgba(255,255,255,0.01)); border-radius:14px; border: 1px solid rgba(255,255,255,0.03); box-shadow: 0 8px 30px rgba(2,6,23,0.7); }
+    .app-shell { max-width:1200px; margin:36px auto; padding:40px; background: rgba(15, 17, 20, 0.75); backdrop-filter: blur(16px); border-radius:24px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 20px 50px -10px rgba(0,0,0,0.5); }
 
     /* Left nav */
-    .side-nav { width:220px; min-width:220px; background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00)); border-radius:12px; padding:18px; border:1px solid rgba(255,255,255,0.02); }
+    .side-nav { width:240px; min-width:240px; background: rgba(255,255,255,0.015); border-radius:16px; padding:24px; border:1px solid rgba(255,255,255,0.03); }
     .brand-dot { width:44px; height:44px; background:linear-gradient(135deg,var(--accent), #24d39a); border-radius:10px; display:flex; align-items:center; justify-content:center; color:#07102a; font-weight:800; }
     .nav-link { color:var(--muted); padding:10px 12px; border-radius:10px; display:flex; gap:10px; align-items:center; transition:all .15s; font-weight:600; }
     .nav-link:hover { background: rgba(255,255,255,0.02); color: #fff; transform:translateX(4px); }
     .nav-active { background: linear-gradient(90deg, rgba(107,140,255,0.06), rgba(36,211,154,0.02)); color: #fff; box-shadow: inset 0 0 0 1px rgba(107,140,255,0.04); }
 
     /* Card styles */
-    .card { background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00)); border-radius:12px; padding:18px; border:1px solid rgba(255,255,255,0.03); }
+    .card { background: rgba(255,255,255,0.015); border-radius:16px; padding:24px; border:1px solid rgba(255,255,255,0.03); }
     .card-quiet { background:transparent; border:1px dashed rgba(255,255,255,0.02); }
 
     /* Input focus */
-    .inp:focus { box-shadow: 0 6px 24px rgba(107,140,255,0.08); border-color: rgba(107,140,255,0.7) !important; outline:none; }
+    .inp { background: rgba(0,0,0,0.2); transition: all 0.2s; }
+    .inp:focus { background: rgba(0,0,0,0.4); box-shadow: 0 0 0 2px rgba(107,140,255,0.3); border-color: var(--accent) !important; outline:none; }
 
     /* Tiny KPIs */
     .kpi { background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00)); border-radius:10px; padding:12px; display:flex; flex-direction:column; gap:6px; min-width:150px; }
@@ -69,36 +70,26 @@
       <!-- Sidebar -->
       <aside class="side-nav hidden lg:block">
         <div class="flex items-center gap-3 mb-6">
-          <div class="brand-dot">K</div>
+          <div class="brand-dot">L</div>
           <div>
-            <div class="text-sm text-gray-300 font-semibold">KAUSTUBH</div>
-            <div class="text-xs sub-muted">AI • Logistics • GeoIntel</div>
+            <div class="text-sm text-gray-300 font-semibold">Logistics</div>
           </div>
         </div>
 
         <nav class="flex flex-col gap-1">
-          <a class="nav-link nav-active" href="#">Dashboard</a>
-          <a class="nav-link" href="#eta">ETA Calculator</a>
-          <a class="nav-link" href="#case-studies">Case Studies</a>
-          <a class="nav-link" href="#services">Services</a>
-          <a class="nav-link" href="#legal-info">Legal Information</a>
+          <button onclick="switchView('dashboard')" class="nav-link nav-active w-full text-left" id="nav-dashboard">Dashboard</button>
         </nav>
-
-        <div class="mt-6">
-          <div class="text-xs sub-muted mb-2">ENV</div>
-          <div class="pill">Production</div>
-        </div>
-
-        <div class="mt-6 text-xs sub-muted">
-          <div class="mb-2">Quick Actions</div>
-          <button id="btnTest" class="w-full bg-white/6 text-white text-sm py-2 rounded-md">Request Brief</button>
-        </div>
       </aside>
 
       <!-- Main area -->
       <main class="flex-1">
-        <!-- Top header area -->
-        <div class="flex items-center justify-between mb-6">
+        
+        <!-- VIEW: DASHBOARD / CALCULATOR (Combined for simplicity as default view) -->
+        <div id="view-dashboard" class="view-section animate-fade-in">
+          <!-- Sanction Alert -->
+          <div id="sanctionAlert" class="hidden mb-6 p-4 rounded-lg bg-red-500/10 border border-red-500/30 text-red-200 font-medium shadow-[0_0_15px_rgba(239,68,68,0.1)]"></div>
+
+          <div class="flex items-center justify-between mb-8">
           <div>
             <h2 class="text-xl font-semibold">ETA Calculator</h2>
             <p class="sub-muted mt-1">Accurate arrival forecasts with configurable handling and congestion assumptions</p>
@@ -116,65 +107,70 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <!-- Left column: Inputs -->
           <section class="col-span-2 card">
-            <div id="eta" class="grid grid-cols-1 md:grid-cols-2 gap-5">
-              <!-- Origin / Destination -->
+            <div id="eta" class="space-y-8">
+              
+              <!-- Group 1: Route -->
               <div>
-                <label class="text-sm sub-muted mb-2">Origin (City / Port)</label>
-                <input id="origin" class="inp w-full px-4 py-3 bg-transparent border border-white/6 rounded-md" placeholder="e.g., Mumbai (Nhava Sheva)" />
-              </div>
-              <div>
-                <label class="text-sm sub-muted mb-2">Destination (City / Port)</label>
-                <input id="destination" class="inp w-full px-4 py-3 bg-transparent border border-white/6 rounded-md" placeholder="e.g., Jebel Ali (Dubai)" />
-              </div>
-
-              <div>
-                <label class="text-sm sub-muted mb-2">Distance (km)</label>
-                <input id="distance" type="number" min="1" class="inp w-full px-4 py-3 bg-transparent border border-white/6 rounded-md" placeholder="e.g., 1900" />
-              </div>
-
-              <div>
-                <label class="text-sm sub-muted mb-2">Transport Mode</label>
-                <select id="mode" class="inp w-full px-4 py-3 bg-transparent border border-white/6 rounded-md">
-                  <option value="truck">Truck</option>
-                  <option value="sea">Ocean Freight (Container)</option>
-                  <option value="air">Air Freight</option>
-                </select>
-              </div>
-
-              <div>
-                <label class="text-sm sub-muted mb-2">Departure (local)</label>
-                <input id="departure" type="datetime-local" class="inp w-full px-4 py-3 bg-transparent border border-white/6 rounded-md" />
-                <div class="text-xs sub-muted mt-1">Choose local departure time at origin</div>
-              </div>
-
-              <div>
-                <label class="text-sm sub-muted mb-2">Origin timezone</label>
-                <select id="timezone" class="inp w-full px-4 py-3 bg-transparent border border-white/6 rounded-md">
-                  <!-- A short curated list for demo -->
-                  <option value="Asia/Kolkata">Asia/Kolkata (IST)</option>
-                  <option value="Asia/Dubai">Asia/Dubai (GST)</option>
-                  <option value="Asia/Shanghai">Asia/Shanghai (CST)</option>
-                  <option value="Europe/London">Europe/London (GMT)</option>
-                  <option value="America/New_York">America/New_York (ET)</option>
-                </select>
-              </div>
-
-              <div class="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label class="text-sm sub-muted mb-2">Estimated handling & port time (hours)</label>
-                  <input id="handling" type="number" min="0" step="0.5" value="12" class="inp w-full px-4 py-3 bg-transparent border border-white/6 rounded-md" />
-                </div>
-                <div>
-                  <label class="text-sm sub-muted mb-2">Congestion multiplier (%)</label>
-                  <input id="congestion" type="number" min="0" step="1" value="0" class="inp w-full px-4 py-3 bg-transparent border border-white/6 rounded-md" />
-                  <div class="text-xs sub-muted mt-1">Enter additional percent delay for congestion (e.g., 25 = +25%)</div>
+                <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">Route Details</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label class="block text-sm sub-muted mb-2">Origin (City / Port)</label>
+                      <input id="origin" class="inp w-full px-4 py-3 border border-white/10 rounded-lg text-white placeholder-gray-600" placeholder="e.g., Mumbai (Nhava Sheva)" />
+                    </div>
+                    <div>
+                      <label class="block text-sm sub-muted mb-2">Destination (City / Port)</label>
+                      <input id="destination" class="inp w-full px-4 py-3 border border-white/10 rounded-lg text-white placeholder-gray-600" placeholder="e.g., Jebel Ali (Dubai)" />
+                    </div>
+                  </div>
+                  <div>
+                    <label class="block text-sm sub-muted mb-2">Distance (km)</label>
+                    <input id="distance" type="number" min="1" class="inp w-full px-4 py-3 border border-white/10 rounded-lg text-white" placeholder="e.g., 1900" />
+                  </div>
+                  <div>
+                    <label class="block text-sm sub-muted mb-2">Transport Mode</label>
+                    <select id="mode" class="inp w-full px-4 py-3 border border-white/10 rounded-lg text-white">
+                      <option value="truck" class="text-black">Truck</option>
+                      <option value="sea" class="text-black">Ocean Freight (Container)</option>
+                      <option value="air" class="text-black">Air Freight</option>
+                    </select>
+                  </div>
                 </div>
               </div>
 
-              <div class="md:col-span-2 mt-2 flex gap-3">
+              <!-- Group 2: Schedule & Logistics -->
+              <div>
+                <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">Schedule & Logistics</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label class="block text-sm sub-muted mb-2">Departure (local)</label>
+                    <input id="departure" type="datetime-local" class="inp w-full px-4 py-3 border border-white/10 rounded-lg text-white" />
+                  </div>
+                  <div>
+                    <label class="block text-sm sub-muted mb-2">Origin timezone</label>
+                    <select id="timezone" class="inp w-full px-4 py-3 border border-white/10 rounded-lg text-white">
+                      <option value="Asia/Kolkata" class="text-black">Asia/Kolkata (IST)</option>
+                      <option value="Asia/Dubai" class="text-black">Asia/Dubai (GST)</option>
+                      <option value="Asia/Shanghai" class="text-black">Asia/Shanghai (CST)</option>
+                      <option value="Europe/London" class="text-black">Europe/London (GMT)</option>
+                      <option value="America/New_York" class="text-black">America/New_York (ET)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-sm sub-muted mb-2">Handling Time (hours)</label>
+                    <input id="handling" type="number" min="0" step="0.5" value="12" class="inp w-full px-4 py-3 border border-white/10 rounded-lg text-white" />
+                  </div>
+                  <div>
+                    <label class="block text-sm sub-muted mb-2">Congestion (%)</label>
+                    <input id="congestion" type="number" min="0" step="1" value="0" class="inp w-full px-4 py-3 border border-white/10 rounded-lg text-white" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="pt-4 flex gap-3">
                 <button id="calcBtn" class="ml-auto w-full sm:w-auto bg-gradient-to-r from-indigo-500 to-teal-400 px-5 py-3 rounded-md text-black font-semibold shadow-md hover:opacity-95">Calculate ETA</button>
                 <button id="resetBtn" class="w-full sm:w-auto bg-white/6 px-4 py-3 rounded-md text-white font-medium">Reset</button>
               </div>
@@ -220,68 +216,51 @@
 
             <div class="card card-quiet text-sm sub-muted">
               <div class="flex items-center justify-between mb-2">
-                <div class="text-xs">Turnkey Export</div>
-                <div class="text-xs font-semibold">Pro</div>
+                <div class="text-xs">Export Data</div>
               </div>
               <div>
-                <div class="text-xs">Export results & assumptions to CSV or attach to a case study with a single click.</div>
-                <div class="mt-3 flex gap-2">
-                  <button id="exportBtn" class="w-full sm:w-auto bg-white/6 px-3 py-2 rounded-md font-semibold">Export CSV</button>
+                <div class="mt-1 flex gap-2">
+                  <button id="exportBtn" class="w-full bg-white/6 px-3 py-2 rounded-md font-semibold text-white">Download CSV</button>
                 </div>
               </div>
             </div>
           </aside>
         </div>
-
-        <!-- Below: Case-study / Legal link (anchor) -->
-        <section id="case-studies" class="mt-8 card">
-          <div class="flex items-center justify-between mb-4">
-            <div>
-              <h3 class="text-lg font-semibold">Case Study — Red Sea Reroute</h3>
-              <div class="sub-muted text-sm">Preview of dashboard-style case file export</div>
-            </div>
-            <div class="text-xs sub-muted">Status: Live</div>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="col-span-2">
-              <div class="text-sm sub-muted mb-2">Summary</div>
-              <div class="text-sm text-gray-200">Real-time threat intelligence reduced transit disruption by enabling reroutes within 36 hours. Estimated savings vs reactive routing: $1.2M per major carrier per annum.</div>
-            </div>
-            <div>
-              <div class="text-sm sub-muted mb-2">Key metrics</div>
-              <div class="text-sm">
-                <div>Avg Delay Reduced: <strong>48%</strong></div>
-                <div>Avg Reroute Time: <strong>6 hrs</strong></div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="legal-info" class="mt-6 card">
-          <div class="flex items-center justify-between mb-4">
-            <div>
-              <h4 class="text-md font-semibold">Legal Information</h4>
-              <div class="sub-muted text-sm">Data privacy, antitrust, and compliance references</div>
-            </div>
-            <div class="text-xs sub-muted">Docs available</div>
-          </div>
-          <div class="text-sm sub-muted">
-            <ul class="list-disc pl-4 space-y-1">
-              <li>Data Privacy: GDPR, India (DPDP bill) — retention & export rules</li>
-              <li>Cyber & Security: Incident disclosure timelines, liability caps</li>
-              <li>Competition & Antitrust: Market data usage and sharing boundaries</li>
-              <li>Contractual: SLAs, liability, confidentiality & data processing addendums</li>
-            </ul>
-          </div>
-        </section>
-
+        </div>
       </main>
     </div>
   </div>
 
   <!-- Minimal JS: calculation + export -->
   <script>
+    // Navigation Logic
+    function switchView(viewName) {
+      // 1. Hide all views
+      document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
+      
+      // 2. Show target view
+      // Mapping 'calculator' to 'dashboard' view for now as they are the same in this template
+      const targetId = (viewName === 'calculator') ? 'view-dashboard' : 'view-' + viewName;
+      const targetEl = document.getElementById(targetId);
+      if(targetEl) targetEl.classList.remove('hidden');
+
+      // 3. Update Nav State
+      document.querySelectorAll('.nav-link').forEach(el => {
+        el.classList.remove('nav-active');
+        el.classList.add('text-muted'); // ensure muted color when inactive
+      });
+      
+      const activeNavId = 'nav-' + viewName;
+      const activeBtn = document.getElementById(activeNavId);
+      if(activeBtn) {
+        activeBtn.classList.add('nav-active');
+        activeBtn.classList.remove('text-muted');
+      }
+    }
+
+    // Initialize
+    switchView('dashboard');
+
     // Base speeds (km/h)
     const BASE_SPEED = { truck: 60, sea: 35, air: 700 };
 
@@ -310,6 +289,7 @@
     const btn = document.getElementById('calcBtn');
     const resetBtn = document.getElementById('resetBtn');
     const exportBtn = document.getElementById('exportBtn');
+    const alertBox = document.getElementById('sanctionAlert');
     const lastCalc = document.getElementById('lastCalc');
 
     btn.addEventListener('click', runCalc);
@@ -327,6 +307,40 @@
       const tz = getVal('timezone') || Intl.DateTimeFormat().resolvedOptions().timeZone;
       const handling = parseFloat(getVal('handling')) || 0;
       const congestionPct = parseFloat(getVal('congestion')) || 0;
+
+      const originInput = document.getElementById('origin');
+      const destinationInput = document.getElementById('destination');
+
+      // Reset alert
+      alertBox.classList.add('hidden');
+      alertBox.innerHTML = '';
+      originInput.classList.remove('border-red-500');
+      originInput.classList.add('border-white/10');
+      destinationInput.classList.remove('border-red-500');
+      destinationInput.classList.add('border-white/10');
+
+      // Sanction / Risk Checks (Run this FIRST)
+      const sanction_track = ['Russia', 'Iran', 'Venazula'];
+      let sanctionMessages = [];
+      
+      if (sanction_track.some(s => origin.toLowerCase().includes(s.toLowerCase()))) {
+        sanctionMessages.push("The origin country is sanctioned.");
+        originInput.classList.remove('border-white/10');
+        originInput.classList.add('border-red-500');
+      }
+      if (sanction_track.some(s => destination.toLowerCase().includes(s.toLowerCase()))) {
+        sanctionMessages.push("The destination country is sanctioned.");
+        destinationInput.classList.remove('border-white/10');
+        destinationInput.classList.add('border-red-500');
+      }
+
+      if (sanctionMessages.length > 0) {
+        alertBox.innerHTML = sanctionMessages.join('<br>');
+        alertBox.classList.remove('hidden');
+        // We do NOT return here, we let the calc proceed or fail validation below, 
+        // but the alert is now visible.
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
 
       // validations
       if (distance <= 0) { alert('Please enter a valid distance in km'); return; }
@@ -349,21 +363,6 @@
       // We'll compute ETA by adding totalHours to departureDate (works if departure input matches user's local offset)
       const etaMs = departureDate.getTime() + Math.round(totalHours * 3600 * 1000);
       const etaDate = new Date(etaMs);
-
-      // if check for the edge cases- sanctions, ESG regulation, laws of individual governments,air-space bans(parmanent/temprorary)
-      let sanction_track = ['Iran', 'Russia']
-      let Air_space_bans_parament = ['Yemen', 'Gaza', 'Westbank']
-      let Air_space_bans_temprory = ['Lebnon', 'Syria', 'Iraq', 'Saudi Arabia', 'Oman', 'Kuwait', 'Qatar', 'UAE', 'Israel']
-
-      btn.addEventListener('click', (e) => {
-         if (origin === sanction_track) {
-              console.log("Error: Origin is sanctioned")
-         }
-        if (destination === sanction_track) {
-              console.log("Error: Destination is sanctioned")
-         }
-      })
-
 
       // fill UI
       document.getElementById('transitHours').innerText = transitWithCongestion.toFixed(1) + ' hrs';
@@ -405,6 +404,12 @@
       document.getElementById('etaLocal').innerText = '—';
       lastCalc.innerText = '—';
       delete lastCalc.dataset.payload;
+      alertBox.classList.add('hidden');
+      alertBox.innerHTML = '';
+      document.getElementById('origin').classList.remove('border-red-500');
+      document.getElementById('origin').classList.add('border-white/10');
+      document.getElementById('destination').classList.remove('border-red-500');
+      document.getElementById('destination').classList.add('border-white/10');
     }
 
     function exportCSV() {
